@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "C:\Users\Cyclip-06b\AppData\Local\Programs\Python\Python37\lib\importlib\util.py", line 96, in find_spec
+    parent_path = parent.__path__
+AttributeError: module 'cogs.cog_general' has no attribute '__path__'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Cyclip-06b\Desktop\Projects\SoSoBot\src\main.py", line 15, in main
+    ssb = SoSoBot(os.getenv("TOKEN"), config.prefix, config.description)
+  File "C:\Users\Cyclip-06b\Desktop\Projects\SoSoBot\src\main.py", line 33, in __init__
+    self.loadCogs()
+  File "C:\Users\Cyclip-06b\Desktop\Projects\SoSoBot\src\main.py", line 38, in loadCogs
+    self.bot.load_extension(f"cogs.{cog}")
+  File "C:\Users\Cyclip-06b\AppData\Local\Programs\Python\Python37\lib\site-packages\discord\ext\commands\bot.py", line 660, in load_extension
+    spec = importlib.util.find_spec(name)
+  File "C:\Users\Cyclip-06b\AppData\Local\Programs\Python\Python37\lib\importlib\util.py", line 100, in find_spec
+    f"while trying to find {fullname!r}", name=fullname) from e
+ModuleNotFoundError: __path__ attribute not found on 'cogs.cog_general' while trying to find 'cogs.cog_general.py'

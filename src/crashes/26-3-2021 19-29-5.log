@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\Cyclip-06b\Desktop\Projects\SoSoBot\src\main.py", line 15, in main
+    ssb = SoSoBot(os.getenv("TOKEN"), config.prefix, config.description)
+  File "C:\Users\Cyclip-06b\Desktop\Projects\SoSoBot\src\main.py", line 33, in __init__
+    self.loadCogs()
+  File "C:\Users\Cyclip-06b\Desktop\Projects\SoSoBot\src\main.py", line 39, in loadCogs
+    self.bot.load_extension(os.path.join("cogs", cog))
+  File "C:\Users\Cyclip-06b\AppData\Local\Programs\Python\Python37\lib\site-packages\discord\ext\commands\bot.py", line 660, in load_extension
+    spec = importlib.util.find_spec(name)
+  File "C:\Users\Cyclip-06b\AppData\Local\Programs\Python\Python37\lib\importlib\util.py", line 94, in find_spec
+    parent = __import__(parent_name, fromlist=['__path__'])
+ModuleNotFoundError: No module named 'cogs\\cog_general'
