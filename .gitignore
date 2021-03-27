@@ -1,2 +1,4 @@
 .env
 Procfile
+src/crashes
+src/__pycache__
