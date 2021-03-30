@@ -1,0 +1,248 @@
+{
+    "kind": "customsearch#search",
+    "url": {
+        "type": "application/json",
+        "template": "https://www.googleapis.com/customsearch/v1?q={searchTerms}&num={count?}&start={startIndex?}&lr={language?}&safe={safe?}&cx={cx?}&sort={sort?}&filter={filter?}&gl={gl?}&cr={cr?}&googlehost={googleHost?}&c2coff={disableCnTwTranslation?}&hq={hq?}&hl={hl?}&siteSearch={siteSearch?}&siteSearchFilter={siteSearchFilter?}&exactTerms={exactTerms?}&excludeTerms={excludeTerms?}&linkSite={linkSite?}&orTerms={orTerms?}&relatedSite={relatedSite?}&dateRestrict={dateRestrict?}&lowRange={lowRange?}&highRange={highRange?}&searchType={searchType}&fileType={fileType?}&rights={rights?}&imgSize={imgSize?}&imgType={imgType?}&imgColorType={imgColorType?}&imgDominantColor={imgDominantColor?}&alt=json"
+    },
+    "queries": {
+        "request": [
+            {
+                "title": "Google Custom Search - white cat",
+                "totalResults": "8510000000",
+                "searchTerms": "white cat",
+                "count": 10,
+                "startIndex": 1,
+                "inputEncoding": "utf8",
+                "outputEncoding": "utf8",
+                "safe": "off",
+                "cx": "015418243597773804934:it6asz9vcss",
+                "searchType": "image"
+            }
+        ],
+        "nextPage": [
+            {
+                "title": "Google Custom Search - white cat",
+                "totalResults": "8510000000",
+                "searchTerms": "white cat",
+                "count": 10,
+                "startIndex": 11,
+                "inputEncoding": "utf8",
+                "outputEncoding": "utf8",
+                "safe": "off",
+                "cx": "015418243597773804934:it6asz9vcss",
+                "searchType": "image"
+            }
+        ]
+    },
+    "context": {
+        "title": "NotSoBot Google Search"
+    },
+    "searchInformation": {
+        "searchTime": 0.581412,
+        "formattedSearchTime": "0.58",
+        "totalResults": "8510000000",
+        "formattedTotalResults": "8,510,000,000"
+    },
+    "items": [
+        {
+            "kind": "customsearch#result",
+            "title": "The Best White Cat Breeds to Keep as Pets",
+            "htmlTitle": "The Best <b>White Cat</b> Breeds to Keep as Pets",
+            "link": "https://www.thesprucepets.com/thmb/hJ40hdpK4KZ5AehlMmVEdJr8zPI=/1999x1459/filters:fill(auto,1)/twenty20_e47b3798-dd9b-40b1-91ef-1d820337966e-5aa3f798642dca00363b0df1.jpg",
+            "displayLink": "www.thesprucepets.com",
+            "snippet": "The Best White Cat Breeds to Keep as Pets",
+            "htmlSnippet": "The Best <b>White Cat</b> Breeds to Keep as Pets",
+            "mime": "image/jpeg",
+            "fileFormat": "image/jpeg",
+            "image": {
+                "contextLink": "https://www.thesprucepets.com/white-cats-profile-4155840",
+                "height": 1459,
+                "width": 1999,
+                "byteSize": 203347,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgakIHFWD1wxHwOYnRQJK_S9u8YHVhjbJVOzx75SENXvIybD0kLBWhiQ&s",
+                "thumbnailHeight": 109,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Inherited Deafness in White Cats | International Cat Care",
+            "htmlTitle": "Inherited Deafness in <b>White Cats</b> | International <b>Cat</b> Care",
+            "link": "https://icatcare.org/app/uploads/2018/09/white-cat-1.png",
+            "displayLink": "icatcare.org",
+            "snippet": "Inherited Deafness in White Cats | International Cat Care",
+            "htmlSnippet": "Inherited Deafness in <b>White Cats</b> | International <b>Cat</b> Care",
+            "mime": "image/png",
+            "fileFormat": "image/png",
+            "image": {
+                "contextLink": "https://icatcare.org/advice/inherited-deafness-in-white-cats/",
+                "height": 600,
+                "width": 1200,
+                "byteSize": 734967,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIydRYjqdNc2auNkX9nPeafpLTeN3w2f4X6Cn1XEhSez0PA3eU_TPdzS8&s",
+                "thumbnailHeight": 75,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "The Best White Cat Breeds to Keep as Pets",
+            "htmlTitle": "The Best <b>White Cat</b> Breeds to Keep as Pets",
+            "link": "https://www.thesprucepets.com/thmb/Nn2pAm2eM-ACSuNoDOIldTacyJk=/1999x1124/smart/filters:no_upscale()/twenty20_e47b3798-dd9b-40b1-91ef-1d820337966e-5aa3f798642dca00363b0df1.jpg",
+            "displayLink": "www.thesprucepets.com",
+            "snippet": "The Best White Cat Breeds to Keep as Pets",
+            "htmlSnippet": "The Best <b>White Cat</b> Breeds to Keep as Pets",
+            "mime": "image/jpeg",
+            "fileFormat": "image/jpeg",
+            "image": {
+                "contextLink": "https://www.thesprucepets.com/white-cats-profile-4155840",
+                "height": 1124,
+                "width": 1999,
+                "byteSize": 157088,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaQFuYrA92gVJyp5dyAFsnxnAGJxq2eJG5g7CIT-KFy8GYAr9RmevqtxU&s",
+                "thumbnailHeight": 84,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "White Cats And The Sun\u2026 What Precautions To Take",
+            "htmlTitle": "<b>White Cats</b> And The Sun\u2026 What Precautions To Take",
+            "link": "https://blog.ferplast.com/wp-content/uploads/2019/07/owning-a-white-cat-5b1b91a318ba9-1024x683.jpg",
+            "displayLink": "blog.ferplast.com",
+            "snippet": "White Cats And The Sun\u2026 What Precautions To Take",
+            "htmlSnippet": "<b>White Cats</b> And The Sun\u2026 What Precautions To Take",
+            "mime": "image/jpeg",
+            "fileFormat": "image/jpeg",
+            "image": {
+                "contextLink": "https://blog.ferplast.com/en/white-cats-and-the-sun-what-precautions-to-take/",
+                "height": 683,
+                "width": 1024,
+                "byteSize": 67560,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWGCjEOx8EP0ZRofl9mBVlliyz8hOKL0EWR3Tv_J3NyCanlAqTWrhFi2c&s",
+                "thumbnailHeight": 100,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "The Best White Cat Breeds to Keep as Pets",
+            "htmlTitle": "The Best <b>White Cat</b> Breeds to Keep as Pets",
+            "link": "https://www.thesprucepets.com/thmb/ldqIhvbKLnqTWLPFmqbjVyoTJ0M=/1945x1459/smart/filters:no_upscale()/twenty20_e47b3798-dd9b-40b1-91ef-1d820337966e-5aa3f798642dca00363b0df1.jpg",
+            "displayLink": "www.thesprucepets.com",
+            "snippet": "The Best White Cat Breeds to Keep as Pets",
+            "htmlSnippet": "The Best <b>White Cat</b> Breeds to Keep as Pets",
+            "mime": "image/jpeg",
+            "fileFormat": "image/jpeg",
+            "image": {
+                "contextLink": "https://www.thesprucepets.com/white-cats-profile-4155840",
+                "height": 1459,
+                "width": 1945,
+                "byteSize": 164030,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5sM1d1Ssx5o6IzexRY28fIms8UnkqkGamJgeUg9RJW_96WM59BHW9DqA&s",
+                "thumbnailHeight": 113,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Odd-eyed cat - Wikipedia",
+            "htmlTitle": "Odd-eyed <b>cat</b> - Wikipedia",
+            "link": "https://upload.wikimedia.org/wikipedia/commons/b/b1/VAN_CAT.png",
+            "displayLink": "en.wikipedia.org",
+            "snippet": "Odd-eyed cat - Wikipedia",
+            "htmlSnippet": "Odd-eyed <b>cat</b> - Wikipedia",
+            "mime": "image/png",
+            "fileFormat": "image/png",
+            "image": {
+                "contextLink": "https://en.wikipedia.org/wiki/Odd-eyed_cat",
+                "height": 3840,
+                "width": 3840,
+                "byteSize": 11618437,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3IIiI9NzRq3-1P4nNiMawJVljVR6UD_qpB-9APbnpzgDNl63o-LGqDozU&s",
+                "thumbnailHeight": 150,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "115 Best White Cat Names for 2020 | The Dog People by Rover.com",
+            "htmlTitle": "115 Best <b>White Cat</b> Names for 2020 | The Dog People by Rover.com",
+            "link": "https://www.rover.com/blog/wp-content/uploads/2019/03/white-cat-4025572_1920.jpg",
+            "displayLink": "www.rover.com",
+            "snippet": "115 Best White Cat Names for 2020 | The Dog People by Rover.com",
+            "htmlSnippet": "115 Best <b>White Cat</b> Names for 2020 | The Dog People by Rover.com",
+            "mime": "image/jpeg",
+            "fileFormat": "image/jpeg",
+            "image": {
+                "contextLink": "https://www.rover.com/blog/best-white-cat-names/",
+                "height": 1201,
+                "width": 1800,
+                "byteSize": 36055,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR36rQwzgu28Y8gJTxLQjLnbgLHo0eei5-HhJO9dLPlX6r5Knjz5MFO-z0&s",
+                "thumbnailHeight": 100,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Amazon.com: Winsterch Kids Cat Stuffed Animal Toys Gift Plush Cat ...",
+            "htmlTitle": "Amazon.com: Winsterch Kids <b>Cat</b> Stuffed Animal Toys Gift Plush <b>Cat</b> ...",
+            "link": "https://images-na.ssl-images-amazon.com/images/I/61wSPkwhEYL._AC_SL1500_.jpg",
+            "displayLink": "www.amazon.com",
+            "snippet": "Amazon.com: Winsterch Kids Cat Stuffed Animal Toys Gift Plush Cat ...",
+            "htmlSnippet": "Amazon.com: Winsterch Kids <b>Cat</b> Stuffed Animal Toys Gift Plush <b>Cat</b> ...",
+            "mime": "image/jpeg",
+            "fileFormat": "image/jpeg",
+            "image": {
+                "contextLink": "https://www.amazon.com/Winsterch-Stuffed-Animal-Plush-Inches/dp/B06XTY3LR8",
+                "height": 1500,
+                "width": 1500,
+                "byteSize": 98329,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe629dPubL3Nro-RZHMrs7UW9utoY1YNKDv7odC7Ogt3wGm7_UBC8f1vij&s",
+                "thumbnailHeight": 150,
+                "thumbnailWidth": 150
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Khao Manee - Wikipedia",
+            "htmlTitle": "Khao Manee - Wikipedia",
+            "link": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Khaomanee_cat.jpg",
+            "displayLink": "en.wikipedia.org",
+            "snippet": "Khao Manee - Wikipedia",
+            "htmlSnippet": "Khao Manee - Wikipedia",
+            "mime": "image/jpeg",
+            "fileFormat": "image/jpeg",
+            "image": {
+                "contextLink": "https://en.wikipedia.org/wiki/Khao_Manee",
+                "height": 4032,
+                "width": 3024,
+                "byteSize": 2137034,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9lNVO4tbRIA-nqRWQ1GvR_RB3XEE_MyY7lRdYTmz5Vg5S8IT8nYwnWfQ&s",
+                "thumbnailHeight": 150,
+                "thumbnailWidth": 113
+            }
+        },
+        {
+            "kind": "customsearch#result",
+            "title": "Woman Accidentally Dyes Her Cat Yellow with Turmeric Treatment ...",
+            "htmlTitle": "Woman Accidentally Dyes Her <b>Cat</b> Yellow with Turmeric Treatment ...",
+            "link": "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F20%2F2020%2F08%2F26%2Ftumeric-cat.jpg&q=85",
+            "displayLink": "people.com",
+            "snippet": "Woman Accidentally Dyes Her Cat Yellow with Turmeric Treatment ...",
+            "htmlSnippet": "Woman Accidentally Dyes Her <b>Cat</b> Yellow with Turmeric Treatment ...",
+            "mime": "image/",
+            "fileFormat": "image/",
+            "image": {
+                "contextLink": "https://people.com/pets/woman-accidentally-dyes-cat-yellow-with-turmeric/",
+                "height": 1000,
+                "width": 1500,
+                "byteSize": 287407,
+                "thumbnailLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0H8oBZ6e4X43sze4qL8Rpv9tgHTleIuG2tNgZLndD16Vy-1XJpkPkiQU&s",
+                "thumbnailHeight": 100,
+                "thumbnailWidth": 150
+            }
+        }
+    ]
+}

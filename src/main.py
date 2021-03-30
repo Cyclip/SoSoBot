@@ -5,6 +5,8 @@ import datetime
 import os
 from dotenv import load_dotenv
 import asyncio
+import time
+from aioconsole import aexec
 
 import config
 import decorators
@@ -19,10 +21,13 @@ class SoSoBot:
 
     def __init__(self, token, prefix, description):
         self.token = token
+        self.prefix = prefix
         self.bot = commands.Bot(
-            command_prefix=prefix, description=description, case_insensitive=True
+            command_prefix=self.prefix, description=description, case_insensitive=True
         )
         self.loadedCogs = []  # For loading and unloading cogs
+
+        self.errorsShowHelp = [commands.MissingRequiredArgument]
 
         self.loadCogs()
         self.addCommands()
@@ -38,7 +43,42 @@ class SoSoBot:
         async def reload(ctx):
             self.unloadCogs()
             self.loadCogs()
-            await ctx.send("Reloaded cogs!")
+            embed = discord.Embed(
+                title=f"Reloaded cogs",
+                description=f"{len(self.loadedCogs)} cogs loaded",
+                color=0x00FF29,
+            )
+            embed.set_author(
+                name="SoSoBot",
+                icon_url="attachment://SSB.png",
+            )
+            await ctx.send(embed=embed)
+
+        @commands.check(decorators.owner_required)
+        @self.bot.command(name="eval", pass_context=True)
+        async def eval_(ctx, *, code):
+            try:
+                start = time.time()
+                returnVal = eval(code)
+                timeTaken = time.time() - start
+                r = f"```{returnVal}\n\n{round(timeTaken, 3)}s```"
+            except Exception:
+                timeTaken = time.time() - start
+                r = f"```{traceback.format_exc()}\n\n{round(timeTaken, 3)}s```"
+            await ctx.send(r)
+
+        @commands.check(decorators.owner_required)
+        @self.bot.command(name="exec", pass_context=True)
+        async def exec_(ctx, *, code):
+            try:
+                start = time.time()
+                rv = await aexec(code)
+                timeTaken = time.time() - start
+                r = f"```{rv}\n\n{round(timeTaken, 3)}s```"
+            except Exception:
+                timeTaken = time.time() - start
+                r = f"```{traceback.format_exc()}\n\n{round(timeTaken, 3)}s```"
+            await ctx.send(r)
 
     def addEvents(self):
         """
@@ -47,16 +87,62 @@ class SoSoBot:
 
         @self.bot.event
         async def on_command_error(ctx, error):
-            if isinstance(error, commands.CommandOnCooldown):
-                # Cooldown error
-                embed = discord.Embed(
-                    title=f"You need to wait {round(error.retry_after, 1)}s before using this command again",
-                    description=f"Calm down <@{ctx.message.author.id}>",
-                    color=0xFF0000,
-                )
-                await ctx.send(embed=embed, delete_after=10)
-                asyncio.sleep(config.cooldownCooldown)
+            isInESH = False
+            for esh in self.errorsShowHelp:
+                if isinstance(error, esh):
+                    e = await self.showHelp()
+                    file = discord.File("resources/SSB.png", filename="SSB.png")
+                    e.set_author(
+                        name="SoSoBot",
+                        icon_url="attachment://SSB.png",
+                    )
+                    await ctx.send(embed=e)
+                    isInESH = True
+                    break
+
+            if not isInESH:
+                if isinstance(error, commands.CommandOnCooldown):
+                    # Cooldown error
+                    embed = discord.Embed(
+                        title=f"You need to wait {round(error.retry_after, 1)}s before using this command again",
+                        description=f"Calm down {ctx.author.name}",
+                        color=0xFF0000,
+                    )
+                    file = discord.File("resources/SSB.png", filename="SSB.png")
+                    embed.set_author(
+                        name="SoSoBot",
+                        icon_url="attachment://SSB.png",
+                    )
+                    await ctx.send(embed=embed, delete_after=10)
+                    asyncio.sleep(config.cooldownCooldown)
+
             raise error  # So errors show up in console
+
+        @self.bot.event
+        async def on_guild_join(ctx):
+            for channel in ctx.text_channels:
+                if channel.permissions_for(ctx.me).send_messages:
+                    try:
+                        embed = discord.Embed(
+                            title="SoSoBot has been added",
+                            description="The bot is currently in beta.",
+                            color=0x2555C1,
+                        )
+                        file = discord.File("resources/SSB.png", filename="SSB.png")
+                        embed.set_author(
+                            name="SoSoBot",
+                            icon_url="attachment://SSB.png",
+                        )
+                        await channel.send(embed=embed, file=file)
+                    except Exception:
+                        pass
+                    break
+
+    async def showHelp(self, title="SoSoBot help"):
+        embed = discord.Embed(
+            title=title, description=f"Use {self.prefix}help for help with commands."
+        )
+        return embed
 
     def loadCogs(self, ignoreAdmin=False):
         """
