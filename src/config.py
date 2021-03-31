@@ -12,3 +12,12 @@ cooldownCooldown = 5
 
 # Bot invite link
 inviteLink = "https://discord.com/api/oauth2/authorize?client_id=825450074116194345&permissions=2080500848&scope=bot"
+
+# Universal colour
+uniColour = 0x2689E4
+
+# Status
+status = ["s!help", "n o m", "pp"]
+
+# Status interval
+statusInterval = 30.0

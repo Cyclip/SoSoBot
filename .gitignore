@@ -4,3 +4,5 @@ src/crashes
 src/__pycache__
 test/general/.env
 src/functions/.env
+src/cache
+src/translationCache

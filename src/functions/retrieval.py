@@ -50,7 +50,9 @@ def getPosts(subreddit, sorting, filter_nsfw):
     sortingFunc = getattr(subreddit, sorting)
 
     for submission in sortingFunc(limit=100):
-        if (filter_nsfw and submission.over_18) or not submission.stickied:
+        if filter_nsfw and submission.over_18:
+            continue
+        if submission.stickied:
             continue
 
         isText = submission.is_self
@@ -59,6 +61,8 @@ def getPosts(subreddit, sorting, filter_nsfw):
             content = submission.selftext
         else:
             content = submission.url
+            if content.startswith("https://v.redd.it/"):
+                continue
 
         posts.append(
             {

@@ -1,10 +1,14 @@
-from discord import Embed, File
+import discord
 from discord.ext import commands
 import traceback
 import time
 import typing
 
+import json
+import os
+
 from functions import retrieval
+import config
 
 
 class General(commands.Cog):
@@ -25,9 +29,11 @@ class General(commands.Cog):
             {
                 "name": cogName,
                 "commands": [
-                    "name": commandName,
-                    "description": commandDescription,
-                    "aliases": aliases
+                    {
+                        "name": commandName,
+                        "description": commandDescription,
+                        "aliases": aliases
+                    }
                 ],
                 "description": description
             }
@@ -40,6 +46,7 @@ class General(commands.Cog):
                     "name": command.name,
                     "description": command.description,
                     "aliases": command.aliases,
+                    "help": command.help,
                 }
                 for command in self.bot.get_cog(cog).get_commands()
             ]
@@ -54,14 +61,17 @@ class General(commands.Cog):
 
     @commands.command(name="help", description="View the help menu")
     async def _help(self, ctx, module: typing.Optional[str] = ""):
+        """
+        Usage: `s!help`
+        """
         cogInfo = self.getCommandInfo()
 
-        if module is "":
+        if module == "":
             # Show all cogs
-            embed = Embed(
+            embed = discord.Embed(
                 title="SoSoBot help menu",
-                description="Developed by [Cyclip](http://github.com/cyclip)",
-                color=0x490606,
+                description="Type `s!help <module>` to list commands for that module.\nType `s!help <commands>` to show command usage.",
+                color=config.uniColour,
             )
 
             for cog in cogInfo:
@@ -72,15 +82,117 @@ class General(commands.Cog):
                 )
 
         else:
-            if module.lower() in [i["name"].lower() for i in cogInfo]:
-                pass
+            moduleNames = [
+                i["name"].lower() for i in cogInfo if i["name"].lower() != "admin"
+            ]
+            found = False
+            for i, n in enumerate(moduleNames):
+                if module.lower() == moduleNames[i]:
+                    embed = discord.Embed(
+                        title=f"{module} commands".capitalize(),
+                        description="Type `s!help <command>` to show command usage",
+                        color=config.uniColour,
+                    )
+                    cog = cogInfo[i]
+                    if len(cog["commands"]) > 0:
+                        for cmd in cog["commands"]:
+                            description = f"{'No description' if (cmd['description'] is None or cmd['description'] == '') else cmd['description']}"
+                            val = (
+                                cmd["help"]
+                                if not (cmd["help"] is None or cmd["help"] == "")
+                                else "No usage description"
+                            )
+                            if len(cmd["aliases"]) > 0:
+                                displayAliases = [f"`{i}`" for i in cmd["aliases"]]
+                                try:
+                                    val += f"\nAliases: {', '.join(displayAliases)}"
+                                except Exception:
+                                    pass
+                            embed.add_field(
+                                name=cmd["name"],
+                                value=val,
+                            )
+                    else:
+                        embed.add_field(
+                            name=f"{module} has no commands".capitalize(),
+                            value="Some commands may be hidden.",
+                        )
+                    found = True
+                    break
 
-        file = File("resources/SSB.png", filename="SSB.png")
-        embed.set_author(
-            name="SoSoBot",
-            icon_url="attachment://SSB.png",
+            if not found:
+                commands, names = self.getCommands(cogInfo)
+                try:
+                    index = names.index(module.lower())
+                    selected = commands[index]
+
+                    embed = discord.Embed(
+                        title=f"Help for {selected['name']}",
+                        color=config.uniColour,
+                    )
+
+                    value2 = (
+                        f"Aliases: {', '.join(selected['aliases'])}"
+                        if len(selected["aliases"]) > 0
+                        else "\u200b"
+                    )
+
+                    embed.add_field(
+                        name=selected["description"], value="\u200b", inline=False
+                    )
+                    embed.add_field(name=selected["help"], value=value2, inline=False)
+                except IndexError:
+                    embed.add_field(
+                        name=f"{module} does not exist".capitalize(),
+                        value="Some commands may be hidden.",
+                    )
+
+        # embed.add_field(name="\u200B", value="\u200B")
+        embed.add_field(
+            value=f"Developed by [Cyclip](https://github.com/Cyclip/)",
+            name="\u200B",
+            inline=False,
         )
+
+        file = discord.File("resources/SSB.png", filename="SSB.png")
+        embed.set_thumbnail(url="attachment://SSB.png")
         await ctx.send(embed=embed, file=file)
+
+    def getCommands(self, cogInfo):
+        """
+        Get all command info.
+        Output example:
+        [
+            {
+                "name": "commandName",
+                "description": "commandDescription",
+                "aliases": "aliases",
+                "help": "help"
+            },
+            {
+                "name": "commandName2",
+                "description": "commandDescription2",
+                "aliases": "aliases2",
+                "help": "help2"
+            },
+            {
+                "name": "commandName3",
+                "description": "commandDescription3",
+                "aliases": "aliases3",
+                "help": "help3"
+            }
+        ]
+        """
+        commands = []
+        names = []
+
+        for cog in cogInfo:
+            listCmds = cog["commands"]
+            for cmd in listCmds:
+                commands += [cmd]
+                names.append(cmd["name"].lower())
+
+        return commands, names
 
     @commands.command(aliases=["subreddit", "red"], description="Search a subreddit")
     @commands.cooldown(4, 7, commands.BucketType.user)
@@ -91,30 +203,58 @@ class General(commands.Cog):
         sorting: typing.Optional[str] = "hot",
     ):
         """
-        Search for reddit posts
+        Usage: `s!reddit <subreddit> [sorting]`
+        Example: `s!reddit all hot`
         """
-        async with ctx.typing():
-            nsfw = ctx.channel.is_nsfw()
-            subreddit = retrieval.getSubreddit(srName)
 
-            if not nsfw and subreddit.over18:
-                e = Embed(
-                    title=f"⛔ Subreddit {srName} cannot be used in non-NSFW channels",
+        srName = srName.replace("r/", "")
+        async with ctx.typing():
+            try:
+                nsfw = ctx.channel.is_nsfw()
+                try:
+                    subreddit = retrieval.getSubreddit(srName)
+                except Exception:
+                    e = discord.Embed(
+                        title=f"⛔ Subreddit {srName} cannot be found",
+                        color=0xFF0000,
+                    )
+                    e.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                    return await ctx.send(embed=e)
+
+                if not nsfw and subreddit.over18:
+                    e = discord.Embed(
+                        title=f"⛔ Subreddit {srName} cannot be used in non-NSFW channels",
+                        color=0xFF0000,
+                    )
+                    e.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                    return await ctx.send(embed=e)
+
+                posts = retrieval.getPosts(subreddit, sorting, nsfw)
+
+                self.activeSubreddits[ctx.author.id] = {
+                    "posts": posts,
+                    "ctx": ctx,
+                    "index": 0,
+                    "sorting": sorting,
+                }
+
+                try:
+                    embed = self.getRedditdiscord.Embed(ctx.author)
+                except IndexError:
+                    e = discord.Embed(
+                        title=f"⛔ r/{srName} does not contain any posts",
+                        color=0xFF0000,
+                    )
+                    e.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+                    return await ctx.send(embed=e)
+            except Exception as err:
+                e = discord.Embed(
+                    title=f"⛔ Unexpected error while handling r/{srName}",
+                    description=str(err),
                     color=0xFF0000,
                 )
                 e.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
                 return await ctx.send(embed=e)
-
-            posts = retrieval.getPosts(subreddit, sorting, nsfw)
-
-            self.activeSubreddits[ctx.author.id] = {
-                "posts": posts,
-                "ctx": ctx,
-                "index": 0,
-                "sorting": sorting,
-            }
-
-            embed = self.getRedditEmbed(ctx.author)
 
         msg = await ctx.send(embed=embed)
         self.activeSubreddits[ctx.author.id]["msg"] = msg
@@ -129,9 +269,9 @@ class General(commands.Cog):
         s = self.activeSubreddits[author.id]
         post = s["posts"][s["index"]]
 
-        embed = Embed(
+        embed = discord.Embed(
             title=post["title"],
-            color=0x2689E4,
+            color=config.uniColour,
         )
 
         if post["isText"]:
@@ -140,7 +280,8 @@ class General(commands.Cog):
             embed.set_image(url=post["content"])
 
         embed.set_footer(
-            text=f"""{post['score']} 👍   |   {post['comments']} 💬
+            text=f"""👍 {post['score']}
+💬 {post['comments']}
 Sorting r/{post['subredditName']} by {s['sorting']}"""
         )
 
@@ -151,22 +292,18 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
 
         return embed
 
-    @commands.command()
-    async def test(self, ctx):
-        pass
-
     @commands.command(
         aliases=["inv", "getinv", "invite"], description="Get the bot's invite link"
     )
     # @commands.cooldown(1, 10, commands.BucketType.user)
     async def getInvite(self, ctx):
         """
-        Send the invite link for the bot
+        Usage: `s!getInvite`
         """
-        e = Embed(
+        e = discord.Embed(
             title="Add SoSoBot to your own server:",
             description=f"[Click here to invite!]({self.inviteLink})",
-            color=0x2BE7A9,
+            color=config.uniColour,
         )
 
         e.add_field(
@@ -175,7 +312,7 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
             inline=True,
         )
 
-        file = File("resources/SSB.png", filename="SSB.png")
+        file = discord.File("resources/SSB.png", filename="SSB.png")
         e.set_author(
             name="SoSoBot",
             icon_url="attachment://SSB.png",
@@ -185,6 +322,9 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
     @commands.command(description="Check the bot's status")
     @commands.cooldown(5, 10, commands.BucketType.user)
     async def ping(self, ctx):
+        """
+        Usage: `s!ping`
+        """
         latency = round(self.bot.latency * 1000)
         if latency >= 200:
             color = 0xDF2F2F
@@ -194,12 +334,12 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
             color = 0xE2F41E
         else:
             color = 0x88EB1C
-        embed = Embed(
+        embed = discord.Embed(
             title="Pong!",
             description=f"{latency}ms latency",
             color=color,
         )
-        file = File("resources/SSB.png", filename="SSB.png")
+        file = discord.File("resources/SSB.png", filename="SSB.png")
         embed.set_author(
             name="SoSoBot",
             icon_url="attachment://SSB.png",
@@ -212,9 +352,9 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
         Generate an image embed
         """
         title = f"Search results for '{query}'"
-        e = Embed(
+        e = discord.Embed(
             title=title,
-            color=0x2689E4,
+            color=config.uniColour,
         )
         e.set_image(url=data["url"])
         e.set_footer(
@@ -226,14 +366,13 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
     @commands.cooldown(2, 4, commands.BucketType.user)
     async def image(self, ctx, *args):
         """
-        .im (inspired by NotSoBot)
-        Search for an image via DuckDuckGo
+        Usage: `s!image <query>`
         """
         try:
             async with ctx.typing():
                 query = " ".join(args[:])
                 if len(query) > 100:
-                    e = Embed(
+                    e = discord.Embed(
                         title=f"⛔ Query is too long ({len(query)}/100 chars)",
                         description=f"Shorten your query by {len(query)-100} characters",
                         color=0xFF0000,
@@ -248,11 +387,13 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
                 print(f"{query} took {round(tt, 3)}s")
 
                 imgIndex = 0
-                embed = self.genEmbed(links[imgIndex], imgIndex, len(links), query)
+                embed = self.gendiscord.Embed(
+                    links[imgIndex], imgIndex, len(links), query
+                )
                 embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
             msg = await ctx.send(embed=embed)
         except Exception as err:
-            e = Embed(
+            e = discord.Embed(
                 title="⛔ Failed to retrieve images",
                 description="There was an unexpected error while using the API.",
                 color=0xFF0000,
@@ -303,7 +444,7 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
                 elif img["imgIndex"] < 0:
                     img["imgIndex"] = 0
 
-                embed = self.genEmbed(
+                embed = self.gendiscord.Embed(
                     img["links"][img["imgIndex"]],
                     img["imgIndex"],
                     len(img["links"]),
@@ -338,7 +479,7 @@ Sorting r/{post['subredditName']} by {s['sorting']}"""
                 elif s["index"] < 0:
                     s["index"] = 0
 
-                embed = self.getRedditEmbed(s["ctx"].author)
+                embed = self.getRedditdiscord.Embed(s["ctx"].author)
                 await s["msg"].edit(embed=embed)
 
 

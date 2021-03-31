@@ -119,13 +119,18 @@ class SoSoBot:
             raise error  # So errors show up in console
 
         @self.bot.event
+        async def on_ready():
+            await self.handleStatus(config.status, config.statusInterval)
+            print("Ready")
+
+        @self.bot.event
         async def on_guild_join(ctx):
             for channel in ctx.text_channels:
                 if channel.permissions_for(ctx.me).send_messages:
                     try:
                         embed = discord.Embed(
                             title="SoSoBot has been added",
-                            description="The bot is currently in beta.",
+                            description="The bot is currently in beta.\n#FREEDOMFORHK",
                             color=0x2555C1,
                         )
                         file = discord.File("resources/SSB.png", filename="SSB.png")
@@ -137,6 +142,23 @@ class SoSoBot:
                     except Exception:
                         pass
                     break
+
+    async def setPresence(self, text):
+        await self.bot.change_presence(
+            activity=discord.Game(name=text), status=discord.Status.dnd
+        )
+
+    async def handleStatus(self, statusList, statusInterval):
+        i = 0
+        max = len(statusList) - 1
+        while True:
+            await self.setPresence(statusList[i])
+            await asyncio.sleep(statusInterval)
+
+            i += 1
+
+            if i > max:
+                i = 0
 
     async def showHelp(self, title="SoSoBot help"):
         embed = discord.Embed(
